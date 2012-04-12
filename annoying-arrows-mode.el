@@ -30,25 +30,22 @@
 (defvar annoying-arrows-too-far-count 10
   "Number of repeated arrow presses before emacs gets annoyed.")
 
-(setq annoying-commands '(previous-line
-                          next-line
-                          right-char
-                          left-char
-                          forward-char
-                          backward-char))
+(setq annoying-commands '())
 
 (defvar annoying-arrows--current-count 0)
 
 (defmacro add-annoying-arrows-advice (cmd)
-  `(defadvice ,cmd (before annoying-arrows activate)
-     (when annoying-arrows-mode
-       (if (memq last-command annoying-commands)
-           (progn
-             (incf annoying-arrows--current-count)
-             (when (> annoying-arrows--current-count annoying-arrows-too-far-count)
-               (beep 1)
-               (message "Your incessant use of the arrow keys annoy me to no end.")))
-         (setq annoying-arrows--current-count 0)))))
+  `(progn
+     (add-to-list 'annoying-commands (quote ,cmd))
+     (defadvice ,cmd (before annoying-arrows activate)
+       (when annoying-arrows-mode
+         (if (memq last-command annoying-commands)
+             (progn
+               (incf annoying-arrows--current-count)
+               (when (> annoying-arrows--current-count annoying-arrows-too-far-count)
+                 (beep 1)
+                 (message "Your incessant use of the arrow keys annoy me to no end.")))
+           (setq annoying-arrows--current-count 0))))))
 
 (add-annoying-arrows-advice previous-line)
 (add-annoying-arrows-advice next-line)
