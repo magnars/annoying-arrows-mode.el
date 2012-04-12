@@ -39,7 +39,8 @@
      (add-to-list 'annoying-commands (quote ,cmd))
      (defadvice ,cmd (before annoying-arrows activate)
        (when annoying-arrows-mode
-         (if (memq last-command annoying-commands)
+         (if (and (memq last-command annoying-commands)
+                  (memq this-command annoying-commands))
              (progn
                (incf annoying-arrows--current-count)
                (when (> annoying-arrows--current-count annoying-arrows-too-far-count)
