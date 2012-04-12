@@ -1,7 +1,7 @@
 # annoying-arrows-mode.el
 
-Entering annoying-arrows-mode makes emacs ring the bell in your face if you use
-move around over long distances in the buffer one char at a time.
+Entering annoying-arrows-mode makes emacs ring the bell in your face if you move
+long distances in the buffer one char at a time.
 
     ;; Annoying arrows mode
     (require 'annoying-arrows-mode)
