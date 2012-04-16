@@ -3,7 +3,7 @@
 ;; Copyright (C) 2011 Magnar Sveen
 
 ;; Author: Magnar Sveen <magnars@gmail.com>
-;; Keywords: marking region
+;; Keywords: learning
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -34,26 +34,27 @@
 
 (defvar annoying-arrows--current-count 0)
 
-(defmacro add-annoying-arrows-advice (cmd)
+(defmacro add-annoying-arrows-advice (cmd alternatives)
   `(progn
      (add-to-list 'annoying-commands (quote ,cmd))
      (defadvice ,cmd (before annoying-arrows activate)
        (when annoying-arrows-mode
-         (if (and (memq this-command annoying-commands)
-                  (eq this-command last-command))
+         (if (eq this-original-command real-last-command)
              (progn
                (incf annoying-arrows--current-count)
                (when (> annoying-arrows--current-count annoying-arrows-too-far-count)
                  (beep 1)
-                 (message "Your incessant use of the arrow keys annoy me to no end.")))
+                 (let* ((alt (nth (random (length ,alternatives)) ,alternatives))
+                        (key (substitute-command-keys (format "\\[%S]" alt))))
+                   (message "Annoying! How about using %S (%s) instead?" alt key))))
            (setq annoying-arrows--current-count 0))))))
 
-(add-annoying-arrows-advice previous-line)
-(add-annoying-arrows-advice next-line)
-(add-annoying-arrows-advice right-char)
-(add-annoying-arrows-advice left-char)
-(add-annoying-arrows-advice forward-char)
-(add-annoying-arrows-advice backward-char)
+(add-annoying-arrows-advice previous-line '(ace-jump-mode backward-paragraph isearch-backward))
+(add-annoying-arrows-advice next-line '(ace-jump-mode forward-paragraph isearch-forward))
+(add-annoying-arrows-advice right-char '(jump-char-forward right-word))
+(add-annoying-arrows-advice left-char '(jump-char-backward left-word))
+(add-annoying-arrows-advice forward-char '(jump-char-forward right-word))
+(add-annoying-arrows-advice backward-char '(jump-char-backward left-word))
 
 (define-minor-mode annoying-arrows-mode
   "Annoying-Arrows emacs minor mode."
