@@ -34,6 +34,12 @@
 
 (defvar annoying-arrows--current-count 0)
 
+(defun aa--commands-with-shortcuts (cmds)
+  (remove-if (lambda (cmd)
+               (string-equal
+                (substring (substitute-command-keys (format "\\[%S]" cmd)) 0 3)
+                "M-x")) cmds))
+
 (defmacro add-annoying-arrows-advice (cmd alternatives)
   `(progn
      (add-to-list 'annoying-commands (quote ,cmd))
@@ -45,19 +51,21 @@
                (incf annoying-arrows--current-count)
                (when (> annoying-arrows--current-count annoying-arrows-too-far-count)
                  (beep 1)
-                 (let* ((alt (nth (random (length ,alternatives)) ,alternatives))
+                 (let* ((alts (aa--commands-with-shortcuts ,alternatives))
+                        (alt (nth (random (length alts)) alts))
                         (key (substitute-command-keys (format "\\[%S]" alt))))
                    (message "Annoying! How about using %S (%s) instead?" alt key))))
            (setq annoying-arrows--current-count 0))))))
 
-(add-annoying-arrows-advice previous-line '(ace-jump-mode backward-paragraph isearch-backward))
-(add-annoying-arrows-advice next-line '(ace-jump-mode forward-paragraph isearch-forward))
+(add-annoying-arrows-advice previous-line '(ace-jump-mode iy-go-to-char backward-paragraph isearch-backward ido-imenu))
+(add-annoying-arrows-advice next-line '(ace-jump-mode iy-go-to-char forward-paragraph isearch-forward ido-imenu))
 (add-annoying-arrows-advice right-char '(jump-char-forward right-word))
 (add-annoying-arrows-advice left-char '(jump-char-backward left-word))
 (add-annoying-arrows-advice forward-char '(jump-char-forward right-word))
 (add-annoying-arrows-advice backward-char '(jump-char-backward left-word))
 
-(add-annoying-arrows-advice backward-delete-char-untabify '(kill-region-or-backward-word subword-backward-kill))
+(add-annoying-arrows-advice backward-delete-char-untabify '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
+(add-annoying-arrows-advice backward-delete-char '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
 ;;(add-annoying-arrows-advice delete-char '(subword-kill kill-line zap-to-char))
 
 (define-minor-mode annoying-arrows-mode
