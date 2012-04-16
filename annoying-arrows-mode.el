@@ -56,6 +56,9 @@
 (add-annoying-arrows-advice forward-char '(jump-char-forward right-word))
 (add-annoying-arrows-advice backward-char '(jump-char-backward left-word))
 
+(add-annoying-arrows-advice backward-delete-char-untabify '(kill-region-or-backward-word subword-backward-kill))
+;;(add-annoying-arrows-advice delete-char '(subword-kill kill-line zap-to-char))
+
 (define-minor-mode annoying-arrows-mode
   "Annoying-Arrows emacs minor mode."
   nil "" nil)
