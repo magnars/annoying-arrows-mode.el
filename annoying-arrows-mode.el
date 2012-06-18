@@ -57,12 +57,12 @@
                    (message "Annoying! How about using %S (%s) instead?" alt key))))
            (setq annoying-arrows--current-count 0))))))
 
-(add-annoying-arrows-advice previous-line '(ace-jump-mode backward-paragraph isearch-backward ido-imenu))
-(add-annoying-arrows-advice next-line '(ace-jump-mode forward-paragraph isearch-forward ido-imenu))
-(add-annoying-arrows-advice right-char '(jump-char-forward iy-go-to-char right-word))
-(add-annoying-arrows-advice left-char '(jump-char-backward iy-go-to-char-backward left-word))
-(add-annoying-arrows-advice forward-char '(jump-char-forward iy-go-to-char right-word))
-(add-annoying-arrows-advice backward-char '(jump-char-backward iy-go-to-char-backward left-word))
+(add-annoying-arrows-advice previous-line '(ace-jump-mode backward-paragraph isearch-backward ido-imenu smart-up))
+(add-annoying-arrows-advice next-line '(ace-jump-mode forward-paragraph isearch-forward ido-imenu smart-down))
+(add-annoying-arrows-advice right-char '(jump-char-forward iy-go-to-char right-word smart-forward))
+(add-annoying-arrows-advice left-char '(jump-char-backward iy-go-to-char-backward left-word smart-backward))
+(add-annoying-arrows-advice forward-char '(jump-char-forward iy-go-to-char right-word smart-forward))
+(add-annoying-arrows-advice backward-char '(jump-char-backward iy-go-to-char-backward left-word smart-backward))
 
 (add-annoying-arrows-advice backward-delete-char-untabify '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
 (add-annoying-arrows-advice backward-delete-char '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
