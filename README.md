@@ -8,3 +8,9 @@ long distances in the buffer one char at a time.
     (global-annoying-arrows-mode)
 
 Set the `annoying-arrows-too-far-count' to adjust the length.
+
+## Contributors
+
+* [Piers Cawley](https://github.com/pdcawley) added `aa-add-suggestion` for easier extension
+
+Thanks!
