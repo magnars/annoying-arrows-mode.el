@@ -94,4 +94,4 @@
                         old-alts))))
 
 (provide 'annoying-arrows-mode)
-;; annoying-arrows-mode.el ends here
+;;; annoying-arrows-mode.el ends here
