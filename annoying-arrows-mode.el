@@ -72,10 +72,12 @@
 (add-annoying-arrows-advice backward-delete-char '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
 ;;(add-annoying-arrows-advice delete-char '(subword-kill kill-line zap-to-char))
 
+;;;###autoload
 (define-minor-mode annoying-arrows-mode
   "Annoying-Arrows emacs minor mode."
   nil "" nil)
 
+;;;###autoload
 (define-globalized-minor-mode global-annoying-arrows-mode
   annoying-arrows-mode annoying-arrows-mode)
 
