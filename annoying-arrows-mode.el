@@ -56,6 +56,16 @@
             (message "Annoying! How about using %S (%s) instead?" alt key))))
     (setq annoying-arrows--current-count 0)))
 
+;;;###autoload
+(define-minor-mode annoying-arrows-mode
+  "Annoying-Arrows emacs minor mode."
+  nil "" nil)
+
+;;;###autoload
+(define-globalized-minor-mode global-annoying-arrows-mode
+  annoying-arrows-mode annoying-arrows-mode)
+
+
 (defmacro add-annoying-arrows-advice (cmd alternatives)
   `(progn
      (add-to-list 'annoying-arrows--commands (quote ,cmd))
@@ -74,15 +84,6 @@
 (add-annoying-arrows-advice backward-delete-char-untabify '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
 (add-annoying-arrows-advice backward-delete-char '(backward-kill-word kill-region-or-backward-word subword-backward-kill))
 ;;(add-annoying-arrows-advice delete-char '(subword-kill kill-line zap-to-char))
-
-;;;###autoload
-(define-minor-mode annoying-arrows-mode
-  "Annoying-Arrows emacs minor mode."
-  nil "" nil)
-
-;;;###autoload
-(define-globalized-minor-mode global-annoying-arrows-mode
-  annoying-arrows-mode annoying-arrows-mode)
 
 (defun aa-add-suggestion (cmd alternative)
   (let ((old-alts (or (get cmd 'annoying-arrows--alts)
